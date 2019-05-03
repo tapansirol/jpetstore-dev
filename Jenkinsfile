@@ -1,4 +1,5 @@
-node{
+agent{
+	node{
   stage ('cloning the repository'){
       git 'https://github.com/tapansirol/jpet-store'
   }
@@ -80,4 +81,5 @@ stage ('HCL One Test') {
 	// sh '/var/jenkins_home/onetest/hcl-onetest-command.sh'
  }
 
+}
 }
