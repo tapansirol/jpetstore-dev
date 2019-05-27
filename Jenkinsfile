@@ -2,7 +2,7 @@ def label = "mypod-${UUID.randomUUID().toString()}"
 podTemplate(label: label) {
     node(label) {
   stage ('cloning the repository'){
-      git 'https://github.com/tapansirol/jpet-store'
+      git 'https://github.com/tapansirol/jpetstore-dev.git'
   }
 	
   //stage('SonarQube analysis') {
