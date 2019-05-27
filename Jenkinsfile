@@ -1,5 +1,6 @@
-agent{
-	node{
+def label = "mypod-${UUID.randomUUID().toString()}"
+podTemplate(label: label) {
+    node(label) {
   stage ('cloning the repository'){
       git 'https://github.com/tapansirol/jpet-store'
   }
@@ -16,14 +17,14 @@ agent{
       sh 'mvn clean package'
     }
   }
-	
+	/*
 	stage('SonarQube Analysis'){
 		def mvnHome = tool name : 'MVN_Local', type:'maven'
 		withSonarQubeEnv('sonar-server'){
 			 //"SONAR_USER_HOME=/opt/bitnami/jenkins/.sonar ${mvnHome}/bin/mvn sonar:sonar"
 			sh  "${mvnHome}/bin/mvn sonar:sonar"
 		}
-	}
+	} */
 stage ("Appscan"){
 	//sleep 40
      //appscan application: '17969f05-19dd-4143-b7e2-c52a3336db18', credentials: 'asoc', failBuild: true, failureConditions: [failure_condition(failureType: 'high', threshold: 4)], name: '17969f05-19dd-4143-b7e2-c52a3336db185549', scanner: static_analyzer('/var/jenkins_home/jobs/JPetStore-test'), type: 'Static Analyzer', wait: true
@@ -48,8 +49,8 @@ stage ("Appscan"){
             delivery: [
                 $class: 'com.urbancode.jenkins.plugins.ucdeploy.DeliveryHelper$Push',
                 pushVersion: 'ver${BUILD_NUMBER}',
-                baseDir: '/var/jenkins_home/workspace/JPetStore/target',
-		 //baseDir: '/var/jenkins_home/workspace/jpetstore/target',
+                //baseDir: '/var/jenkins_home/workspace/JPetStore/target',
+		 baseDir: '/var/jenkins_home/workspace/jpetstore/target',
                 fileIncludePatterns: '*.war',
                 fileExcludePatterns: '',
                // pushProperties: 'jenkins.server=Jenkins-app\njenkins.reviewed=false',
@@ -68,7 +69,7 @@ stage ("Appscan"){
                 	$class: 'com.urbancode.jenkins.plugins.ucdeploy.ProcessHelper$CreateProcessBlock',
                 	processComponent: 'Deploy'
             	],
-            	deployVersions: 'jenkins-jpet-component:ver${BUILD_NUMBER}',
+            	deployVersions: 'jenkins-jpet-component:ver${BUILD_NUMBER}', 
 		//deployVersions: 'SNAPSHOT=Base Configuration',
             	deployOnlyChanged: false
         ]
@@ -76,9 +77,9 @@ stage ("Appscan"){
  }
  
 stage ('HCL One Test') {
-	sleep 25
-	// echo 'Executing HCL One test ... '
-	// sh '/var/jenkins_home/onetest/hcl-onetest-command.sh'
+	// sleep 25
+	 echo 'Executing HCL One test ... '
+	 sh '/var/jenkins_home/onetest/create-and-execute-workspace.sh'
  }
 
 }
