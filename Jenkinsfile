@@ -12,16 +12,16 @@ podTemplate(label: label) {
      // sh "${scannerHome}/bin/sonar-scanner"
     //}
   //}
-/*
+
   stage ('Build') {
       withMaven(jdk: 'JDK_local', maven: 'MVN_Local') {
-      //sleep 180
       sh "echo JAVA_HOME=$JAVA_HOME"
+      sleep 180
       sh 'mvn clean package'
 	      
     }
   }
-  */
+  
 	
 	stage('SonarQube Analysis'){
 		def mvnHome = tool name : 'MVN_Local', type:'maven'
