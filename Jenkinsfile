@@ -14,9 +14,10 @@ podTemplate(label: label) {
   //}
   stage ('Build') {
       withMaven(jdk: 'JDK_local', maven: 'MVN_Local') {
-      sleep 180
-      sh 'mvn clean install'
-      //sh 'mvn clean package'
+      //sleep 180
+      sh "echo JAVA_HOME=$JAVA_HOME"
+      sh 'mvn clean package'
+	      
     }
   }
 	/*
