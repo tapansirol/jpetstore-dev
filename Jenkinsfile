@@ -27,7 +27,7 @@ podTemplate(label: label) {
 		def mvnHome = tool name : 'MVN_Local', type:'maven'
 		withSonarQubeEnv('sonar-server'){
 			 //"SONAR_USER_HOME=/opt/bitnami/jenkins/.sonar ${mvnHome}/bin/mvn sonar:sonar"
-			sh  "${mvnHome}/bin/mvn sonar:sonar"
+			sh  "${mvnHome}/bin/mvn sonar:sonar -Dsonar.projectKey=${JOB_NAME} -Dsonar.projectName=${JOB_NAME}"
 		}
 	} 
 stage ("Appscan"){
